@@ -1,6 +1,8 @@
 package tn.esprit.spring.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,8 @@ public class EventServiceImp implements IEventService{
 	
 	public void addEvent(Event e) {
 		
-		
 	
 		iEventRepository.save(e);
-	
-	
-		
 		
 	}
 	//creating deleting method that remove   event by id  from database
@@ -41,10 +39,23 @@ public class EventServiceImp implements IEventService{
 		}
 
 		@Override
-		public void findEventById(int id) {
-			 iEventRepository.findById(id).get();
+		public Event findEventById(int id) {
+			return  iEventRepository.findById(id).get();
 		} 
 
-
-	
+		//creating getAll method that retrieve all events from database
+		@Override
+		public List<Event> getAllEvents() {
+			
+			List<Event>events = new ArrayList<Event>();
+			iEventRepository.findAll().forEach(e ->events.add(e));
+			return events;
+		}
+		@Override
+		public int updateEvent(Event e, int id) {
+			 
+				return iEventRepository.updateEvent(e.getTitle(),e.getDate() , e.getHour(), 
+							e.getAddress(), e.getDescription(), e.getPlacesNbr(),e.getCategory(),e.getTicketPrice(),e.isStatus(),e.getImage(),e.getIdEvenement());
+			}
+		
 }
