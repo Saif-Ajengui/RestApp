@@ -60,6 +60,9 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role type;
 	
+	@Column(name = "resettoken")
+	private String resettoken;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<Notification> notif;
 
@@ -119,6 +122,16 @@ public class User implements Serializable {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public String getResettoken() {
+		return resettoken;
+	}
+	public void setResettoken(String resettoken) {
+		this.resettoken = resettoken;
+	}
+	
 	
 	
 	
