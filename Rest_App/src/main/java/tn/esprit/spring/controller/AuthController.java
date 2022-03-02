@@ -1,34 +1,35 @@
 package tn.esprit.spring.controller;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import tn.esprit.spring.config.JwtTokenUtil;
 import tn.esprit.spring.entity.User;
+import tn.esprit.spring.jwt.JwtRequest;
+import tn.esprit.spring.jwt.JwtResponse;
 import tn.esprit.spring.repository.UserRepository;
-import tn.esprit.spring.response.AuthDetailsUser;
-import tn.esprit.spring.response.JwtUtils;
 import tn.esprit.spring.response.MessageResponse;
 import tn.esprit.spring.service.ISendEmail;
 import tn.esprit.spring.service.IUserService;
@@ -37,6 +38,7 @@ import tn.esprit.spring.service.UserService;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/Authentification")
 public class AuthController {
 
@@ -50,28 +52,53 @@ public class AuthController {
 	UserRepository userRepository;
 	@Autowired
 	AuthenticationManager authenticationManager;
-	@Autowired
-	JwtUtils jwtUtils;
-	
-	
-	@PostMapping("/login")
-	public String authenticateUser(@Valid @RequestBody User login) throws Exception {
-		String resultat = userService.Authentication(login.getEmail(),
-				login.getPwd());
-		/*if (resultat.length() ==0) {
-			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPwd()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String jwt = jwtUtils.generateJwtToken(authentication);
-			AuthDetailsUser userDetails = (AuthDetailsUser) authentication.getPrincipal();
-			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-					.collect(Collectors.toList());
 
-			return jwt;
-		}*/
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private UserDetailsService jwtInMemoryUserDetailsService;
+	
+	
+
+	@PostMapping( "/login")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
+			throws Exception {
+		String resultat = userService.Authentication(authenticationRequest.getUsername(),
+				authenticationRequest.getPassword());
+		if (resultat=="User unfound") {
+			return ResponseEntity.ok("User unfound");
+		}else if (resultat=="unverified account") {
+			return ResponseEntity.ok("unverified account");
+		}else if (resultat=="password wrong") {
+			return ResponseEntity.ok("password wrong");
+		}else{
+		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+		final UserDetails userDetails = jwtInMemoryUserDetailsService
+				.loadUserByUsername(authenticationRequest.getUsername());
+
+		final String token = jwtTokenUtil.generateToken(userDetails);
+
+		return ResponseEntity.ok(new JwtResponse(token));
+		}
 		
-		return resultat;
 	}
+
+	private void authenticate(String username, String password) throws Exception {
+		Objects.requireNonNull(username);
+		Objects.requireNonNull(password);
+		
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+	}
+	
+	
 	
 	
 	@PostMapping("/signup")
@@ -127,20 +154,6 @@ public class AuthController {
 	}
 	
 	
-	@PutMapping("/UpdateUser/{id}")
-	@ResponseBody
-	public User updateUser(@RequestBody User user, @PathVariable("id") int id) throws Exception {
-		User u = userRepository.findUserById(id);
-		if (!encoder.encode(user.getPwd()).equals(u.getPwd())) {
-			user.setPwd(encoder.encode(user.getPwd()));
-		}
-		return userService.UpdateProfile(id, user);
-	}
-	
-	@GetMapping("/ShowProfile/{id}")
-	public User getUserById(@PathVariable("id") int id) throws Exception {
-		return userService.ShowProfile(id);
-	}
 	
 	@PostMapping("/forgot/{email}")
 	public String processForgotPasswordForm(@PathVariable("email") String email,
@@ -148,9 +161,9 @@ public class AuthController {
 		User user = userRepository.findUserByEmail(email);
 
 		if (user == null) {
-			return "user not found";
+			return "user not found"; 
 		} else {
-			//token 
+			//resettoken 
 			user.setResettoken(UUID.randomUUID().toString());
 
 			userService.updatePassword(user);

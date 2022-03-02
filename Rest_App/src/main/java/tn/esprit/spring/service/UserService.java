@@ -55,7 +55,7 @@ public class UserService implements IUserService {
     		return "User unfound";
     	
     	}else if (user.isApproved()==false) {
-    		return "account wrong";
+    		return "unverified account";
     	}else if (encoder.matches(pwd, user.getPwd())) {
             
     		return "Welcom";

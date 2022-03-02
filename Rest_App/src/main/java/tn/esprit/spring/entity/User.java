@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -47,8 +48,9 @@ public class User implements Serializable {
 	private String fname;
 	@Column(name = "birthdate")
 	private Date birthdate;
-	@Column(name = "pic")
-	private String pic;
+	@Column(name = "pic", nullable = true)
+	@Lob
+	private byte[] pic;
 	@Column(name = "email")
 	private String email;
 	@Column(name = "pwd")
@@ -73,6 +75,11 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.EAGER)
 	private Set<TChat> TChatR;
 	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 	public String getLname() {
 		return lname;
@@ -86,12 +93,17 @@ public class User implements Serializable {
 	public void setFname(String fname) {
 		this.fname = fname;
 	}
-	public String getPic() {
+	
+	public byte[] getPic() {
 		return pic;
 	}
-	public void setPic(String pic) {
+
+
+	public void setPic(byte[] pic) {
 		this.pic = pic;
 	}
+
+
 	public String getEmail() {
 		return email;
 	}
