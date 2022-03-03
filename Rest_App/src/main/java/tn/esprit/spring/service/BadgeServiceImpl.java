@@ -39,8 +39,7 @@ public class BadgeServiceImpl implements BadgeService{
 	public Badge updateBadge(Badge badge) {
 		// TODO Auto-generated method stub
 		Badge b = badgeRepo.findById(badge.getId()).orElse(null);
-		b.setImgName(badge.getImgName());
-		b.setImgPath(badge.getImgPath());
+		b.setImg(badge.getImg());
 		b.setNbVoteABS(badge.getNbVoteABS());
 		b.setNbVoteNo(badge.getNbVoteNo());
 		b.setNbVoteYes(badge.getNbVoteYes());

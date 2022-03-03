@@ -5,6 +5,7 @@ public enum TaskState {
 	Waiting,
 	Submitted,
 	Submitted_with_delay,
-	Missed;
+	Missed,
+	To_Redo;
 
 }

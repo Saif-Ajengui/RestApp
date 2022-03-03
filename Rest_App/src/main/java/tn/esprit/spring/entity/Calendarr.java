@@ -1,20 +1,17 @@
 package tn.esprit.spring.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-//brouillon user
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +23,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class Calendarr implements Serializable {
 
 	/**
 	 * 
@@ -38,23 +35,16 @@ public class User implements Serializable {
 	private int id;
 
 	private String name;
-	
-	private String deptName;
 
 	// attributs de mapping:
-	@OneToOne
-	private Badge badge;
-	
-	@JsonIgnore
-	@ManyToMany(mappedBy="users",fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "Calendarr", cascade = CascadeType.ALL)
 	private List<Task> task;
-	
-	
-	
-	@OneToMany(cascade= CascadeType.ALL)
-	private List<Evaluation> evaluation;
-	
-	@OneToOne
-	private Score score;
 
 }
+
+
+
+
+
+
