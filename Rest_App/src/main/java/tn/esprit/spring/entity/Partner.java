@@ -1,33 +1,36 @@
 package tn.esprit.spring.entity;
 
+
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jboss.jandex.TypeTarget;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Partner implements Serializable{
+
+public class Partner implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -38,17 +41,111 @@ public class Partner implements Serializable{
 	
 	private String email;
 	
-	private String fiel;
+	private int num_tel;
 	
-	private String imgName;
+	private String imgLogo;
 	
-	private String imgPath;
+	
 	
 	//Att de mapping:
 	
-	@ManyToMany(mappedBy="patner", cascade= CascadeType.ALL)
-	private Set<Partnership> partnership;
+	public int getId() {
+		return id;
+	}
 
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public int getNum_tel() {
+		return num_tel;
+	}
+
+
+	public void setNum_tel(int num_tel) {
+		this.num_tel = num_tel;
+	}
+
+
+	public String getImgLogo() {
+		return imgLogo;
+	}
+
+
+	public void setImgLogo(String imgLogo) {
+		this.imgLogo = imgLogo;
+	}
+
+
+	public List<Offre> getOffre() {
+		return offre;
+	}
+
+
+	public void setOffre(List<Offre> offre) {
+		this.offre = offre;
+	}
+
+
+	public Contrat getContrat() {
+		return contrat;
+	}
+
+
+	public void setContrat(Contrat contrat) {
+		this.contrat = contrat;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	@OneToMany(mappedBy="Partner", 
+			cascade={CascadeType.PERSIST, CascadeType.REMOVE},
+			fetch=FetchType.EAGER)
+   private List<Offre> offre;
+	
+	
+	@OneToOne
+	private Contrat contrat;
 	
 
+		
+	
+	
+	
 }
