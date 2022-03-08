@@ -58,9 +58,10 @@ public class AuthController {
 
 	@Autowired
 	private UserDetailsService jwtInMemoryUserDetailsService;
-	
+
 	
 
+	
 	@PostMapping( "/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
@@ -137,7 +138,7 @@ public class AuthController {
 							+ ":\n" 
 							+ "Your Role is " + user.getType()
 							+ ".\n"+"Approved your account "
-							+ "http://localhost:8082/examen/Authentification/ApprovedProfile/"+user.getId()
+							+ "http://localhost:8082/Authentification/ApprovedProfile/"+user.getId()
 							+"\n"+"\n"
 							+"Cordialement / Rest App.") ;
 
@@ -174,7 +175,7 @@ public class AuthController {
 			passwordResetEmail.setText("Dear " + user.getLname()
 					+ "\n "
 					+"To reset your password, click the link below: \n "
-					+ "https://localhost:8082/examen/Authentification/reset/"
+					+ "https://localhost:8082/Authentification/reset/"
 					+ "\n "
 					+"\n Your token is: "
 					+ user.getResettoken());
