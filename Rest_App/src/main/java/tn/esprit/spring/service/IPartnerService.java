@@ -2,11 +2,13 @@ package tn.esprit.spring.service;
 
 import java.util.List;
 
-import com.example.demo.Partner;
+import tn.esprit.spring.entity.Partner;
+
+
 
 public interface IPartnerService {
 
-public Partner addPartner(Partner p) throws Exception;
+public Partner addPartner(Partner p , int idc) throws Exception;
 	
 	public String deletePartner(int id) throws Exception;
 	
@@ -14,6 +16,7 @@ public Partner addPartner(Partner p) throws Exception;
 	
 	public List<Partner> getAllPartner();
 	
+	public int CountPartnerByid(int id);
 
 
 

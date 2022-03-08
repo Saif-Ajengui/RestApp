@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+
+
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.jboss.jandex.TypeTarget;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -110,12 +110,12 @@ public class Partner implements Serializable {
 
 
 	public List<Offre> getOffre() {
-		return offre;
+		return offres;
 	}
 
 
 	public void setOffre(List<Offre> offre) {
-		this.offre = offre;
+		this.offres = offre;
 	}
 
 
@@ -134,10 +134,10 @@ public class Partner implements Serializable {
 	}
 
 
-	@OneToMany(mappedBy="Partner", 
+	@OneToMany(mappedBy="partner", 
 			cascade={CascadeType.PERSIST, CascadeType.REMOVE},
 			fetch=FetchType.EAGER)
-   private List<Offre> offre;
+   private List<Offre> offres;
 	
 	
 	@OneToOne

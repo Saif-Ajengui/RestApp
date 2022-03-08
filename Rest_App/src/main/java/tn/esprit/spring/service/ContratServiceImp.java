@@ -3,10 +3,15 @@ package tn.esprit.spring.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entity.Contrat;
-import tn.esprit.spring.entity.Offre;
+
 import tn.esprit.spring.repository.IContratRepository;
+import tn.esprit.spring.repository.IPartnerRepository;
+
+@Service
+
 
 public class ContratServiceImp implements IContratService {
 	
@@ -14,8 +19,12 @@ public class ContratServiceImp implements IContratService {
 	
 	IContratRepository ContratRepository;
 
+	@Autowired 
+	IPartnerRepository PartnerRep;
+
 	@Override
-	public Contrat addContrat(Contrat c) throws Exception {
+	public Contrat addContrat(Contrat c ) throws Exception {
+	
 		ContratRepository.save(c);
 		return c;
 	}
@@ -27,17 +36,24 @@ public class ContratServiceImp implements IContratService {
 	}
 
 	@Override
-	public String updateContrat(Contrat c, int id) throws Exception {
+	public Contrat updateContrat(Contrat c, int id) throws Exception {
 		Contrat upd = ContratRepository.findCById(id);
 		upd.setDate_Debut(c.getDate_Debut());
 		upd.setDate_Fin(c.getDate_Fin());
 		upd.setContract_value(c.getContract_value());
-		return "Update Succes";
+		return ContratRepository.save(upd);
 	}
 
 	@Override
-	public List<Contrat> getAllPosts() {
+	public List<Contrat> getAllContrat() {
 		return  (List<Contrat>) ContratRepository.findAll();
 	}
+
+	@Override
+	public List<Contrat> getContratElvee() {
+		return (List<Contrat>) ContratRepository.ContratElevee();		
+	}
+	
+	
 
 }

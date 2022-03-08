@@ -3,10 +3,13 @@ package tn.esprit.spring.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entity.Offre;
 
 import tn.esprit.spring.repository.IOffreRepository;
+
+@Service
 
 public class OffreServiceImp implements IOffreService{
 
@@ -28,19 +31,35 @@ public class OffreServiceImp implements IOffreService{
 	}
 
 	@Override
-	public String updateOffre(Offre o, int id) throws Exception {
+	public Offre updateOffre(Offre o, int id) throws Exception {
 		Offre up = OffreRepository.findOById(id);
 		up.setDate_DebutOffre(o.getDate_DebutOffre());
 		up.setDate_FinOffre(o.getDate_FinOffre());
 		up.setDescription(o.getDescription());
 		up.setOffre_Value(o.getOffre_Value());
-		return "Update Succes";
+		
+		return OffreRepository.save(up);
 		
 	}
 
 	@Override
-	public List<Offre> getAllPosts() {
+	public List<Offre> getAllOffre() {
 		return  (List<Offre>) OffreRepository.findAll();
 	}
+
+	@Override
+	public List<Offre> getOffreByPartnerid(int id) {
+		
+			return OffreRepository.getOffreByPartnerid(id);
+	}
+
+	@Override
+	public int CountOffreByPartner(int id) {
+		
+		List<Offre> offres = (List<Offre>) OffreRepository.getOffreByPartnerid(id);
+		return offres.size();
+	}
+
+	
 
 }

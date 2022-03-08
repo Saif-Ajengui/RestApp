@@ -13,14 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Partner;
-
-import tn.esprit.spring.Entity.Collaborator;
+import tn.esprit.spring.entity.Partner;
 import tn.esprit.spring.service.IPartnerService;
 
 
 	@RestController
-	@RequestMapping(path ="/api/Partner")
+	@RequestMapping(path ="/Partner")
 public class PartnerController {
 
 		@Autowired
@@ -29,27 +27,28 @@ public class PartnerController {
 		//CRUD Partner
 		
 		@PostMapping
-	    @RequestMapping(path = "/Partner/new")
+	    @RequestMapping(path = "/new/{idc}")
 	    @ResponseBody
-	    public Partner addPartner(@RequestBody Partner p) throws Exception{
-	        return iPartnerService.addPartner(p);
+	    public Partner addPartner(@RequestBody Partner p , @PathVariable int idc) throws Exception{
+	        return iPartnerService.addPartner(p,idc);
 	    }
 		
 		@PutMapping
-	    @RequestMapping(path = "/Partner/edit{id)}")
+	    @RequestMapping(path = "/edit/{id}")
 	    @ResponseBody
 	    public Partner updatePartner(@RequestBody Partner p ,@PathVariable int id) throws Exception{
 	        return iPartnerService.updatePartner(p,id );
 	    }
 		
 		
-		@DeleteMapping({"/Partner/delete/{id}"})
-	    public void deletePartner(@PathVariable int id) throws Exception{
-	        iPartnerService.deletePartner(id);
+		@DeleteMapping({"/delete/{id}"})
+	    public String deletePartner(@PathVariable int id) throws Exception{
+	        return iPartnerService.deletePartner(id);
+	        
 	    }
 		
 		@GetMapping
-	    @RequestMapping(path ="/partner")
+	    @RequestMapping(path ="/list")
 	    public List<Partner> getAllPartner(){
 	        return iPartnerService.getAllPartner();
 	    }

@@ -11,7 +11,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.example.demo.Partner;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -82,7 +81,7 @@ public class Contrat implements Serializable  {
 	
 	//Att de mapping:
 	
-	@OneToOne (mappedBy="Partner")
+	@OneToOne (mappedBy="contrat")
 	
 	private Partner partner;
 }

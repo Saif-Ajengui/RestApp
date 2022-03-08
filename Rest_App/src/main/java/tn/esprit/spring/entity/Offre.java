@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.example.demo.Partner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
