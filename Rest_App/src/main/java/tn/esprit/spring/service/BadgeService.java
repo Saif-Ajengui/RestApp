@@ -6,7 +6,7 @@ import tn.esprit.spring.entity.Badge;
 
 public interface BadgeService {
 
-	void ajouterBadge(Badge badge);
+	Badge ajouterBadge(Badge badge);
 
 	List<Badge> getBadges();
 
@@ -15,5 +15,7 @@ public interface BadgeService {
 	Badge updateBadge(Badge badge);
 
 	String deleteBadge(int id);
+
+	Badge voteBadge(int id, String vote);
 
 }

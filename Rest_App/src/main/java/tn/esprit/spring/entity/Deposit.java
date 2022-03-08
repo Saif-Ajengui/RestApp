@@ -1,19 +1,27 @@
 package tn.esprit.spring.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-//brouillon user
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,35 +35,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Deposit implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private String name;
+	@Lob
+	@Column(unique = false, nullable = false, length = 100000)
+	public byte[] file;
 	
-	private String deptName;
-
 	// attributs de mapping:
-	@OneToOne
-	private Badge badge;
-	
-	//@JsonIgnore
-	@ManyToMany(mappedBy="users",fetch=FetchType.EAGER)
-	private List<Task> task;
-	
-
-	
-	
-	
-	@OneToMany(cascade= CascadeType.ALL)
-	private List<Evaluation> evaluation;
-
+	@ManyToOne
+	private Task task;
 
 }

@@ -33,7 +33,7 @@ public class BadgeControl {
 
 	// http://localhost:8082/examen/Badge/AjoutBadge
 	@PostMapping(value = "/AjoutBadge", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public void AjoutBadge(@RequestParam("nbVoteYes") int nbVoteYes, @RequestParam("nbVoteNo") int nbVoteNo,
+	public Badge AjoutBadge(@RequestParam("nbVoteYes") int nbVoteYes, @RequestParam("nbVoteNo") int nbVoteNo,
 			@RequestParam("nbVoteABS") int nbVoteABS, @RequestPart("img") MultipartFile file) throws IOException {
 		Badge bd = new Badge();
 
@@ -56,7 +56,7 @@ public class BadgeControl {
 			System.out.println(e.getMessage());
 		}
 
-		badgeService.ajouterBadge(bd);
+		return badgeService.ajouterBadge(bd);
 
 	}
 
@@ -87,5 +87,12 @@ public class BadgeControl {
 	public String deleteBadge(@PathVariable("id") int id) {
 		return badgeService.deleteBadge(id);
 	}
+	
+	// http://localhost:8082/examen/Badge/voteBadge/id/vote
+		@PutMapping("/voteBadge/{id}/{vote}")
+		@ResponseBody
+		public Badge voteBadge(@PathVariable("id") int id, @PathVariable("vote") String vote) {
+			return badgeService.voteBadge(id,vote);
+		}
 
 }

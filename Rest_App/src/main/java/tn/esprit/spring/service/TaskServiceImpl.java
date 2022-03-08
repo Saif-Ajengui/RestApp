@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import tn.esprit.spring.entity.Score;
 import tn.esprit.spring.entity.Task;
 import tn.esprit.spring.entity.User;
 import tn.esprit.spring.repository.TaskRepo;
@@ -26,14 +25,14 @@ public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	private TaskRepo taskRepo;
-	
+
 	@Autowired
 	private UserRepo userRepo;
 
 	@Override
-	public void ajouterTask(Task task) {
+	public Task ajouterTask(Task task) {
 		// TODO Auto-generated method stub
-		taskRepo.save(task);
+		return taskRepo.save(task);
 
 	}
 
@@ -49,23 +48,25 @@ public class TaskServiceImpl implements TaskService {
 		return taskRepo.findById(id).get();
 	}
 
+	public List<Integer> getId_SortDDL_ProcessingTasks() {
+
+		return taskRepo.getIdTriDDLProcessing();
+
+	}
+
 	@Override
-	public Calendar getStartDate(int id) {
+	public List<Task> getTask_SortDDL_ProcessingTasks() {
 		// TODO Auto-generated method stub
-		return taskRepo.retrieveStartDateById(id);
+		return taskRepo.getTaskTriDDLProcessing();
 	}
 	
 	@Override
-	public Calendar getFinishDate(int id) {
+	public List<Task> getTask_SortDDL_ProcessingTasks_byProject(String pName) {
 		// TODO Auto-generated method stub
-		return taskRepo.retrieveFinishDateById(id);
+		return taskRepo.getTaskTriDDLProcessing_byProject(pName);
+		
 	}
-	
-	//@Override
-	public int getNb_Word_Days(int id) {
-		// TODO Auto-generated method stub
-		return taskRepo.getNb_Word_Days(id);
-	}
+
 
 	@Override
 	public Task updateTask(Task task) {
@@ -82,23 +83,6 @@ public class TaskServiceImpl implements TaskService {
 
 		return taskRepo.save(b);
 	}
-	
-	@Override
-	public Task updateStartDate(int id, Calendar date) {
-		// TODO Auto-generated method stub
-		Task b = taskRepo.findById(id).orElse(null);
-		b.setStartDate(date);
-		return taskRepo.save(b);
-	}
-	
-	@Override
-	public Task updatefinishDate(int id, Calendar date) {
-		// TODO Auto-generated method stub
-		Task b = taskRepo.findById(id).orElse(null);
-		b.setFinishDate(date);
-		return taskRepo.save(b);
-	}
-
 
 	@Override
 	public String deleteTask(int id) {
@@ -107,25 +91,87 @@ public class TaskServiceImpl implements TaskService {
 		return "task " + id + " is deleted";
 	}
 
-	public List<Integer> trierparddl() {
+	// @Override public Calendar getStartDate(int id) { // TODO Auto-generated
+	// method stub return taskRepo.retrieveStartDateById(id); }
 
-		return taskRepo.triDDL();
-
+	@Override
+	public Calendar getFinishDate(int id) {
+		return taskRepo.retrieveFinishDateById(id);
 	}
 
+	@Override
+	public Task updateStartDate(int id, Calendar date) {
+		Task b = taskRepo.findById(id).orElse(null);
+		b.setStartDate(date);
+		return taskRepo.save(b);
+	}
+
+	@Override
+	public Task updatefinishDate(int id, Calendar date) {
+		Task b = taskRepo.findById(id).orElse(null);
+		b.setFinishDate(date);
+		return taskRepo.save(b);
+	}
 
 	@Override
 	public Calendar calculate_FinishDate(int id) {
-		// TODO Auto-generated method stub
 		Calendar aux = taskRepo.retrieveStartDateById(id);
 		int nb_work_days = taskRepo.getNb_Word_Days(id);
 		aux.add(Calendar.DAY_OF_MONTH, nb_work_days);
-		
+
 		return aux;
 	}
 
-	
-	
+	@Override
+	public int getNb_Word_Days(int id) {
+		return taskRepo.getNb_Word_Days(id);
+	}
+	/*
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @Transactional
+	 * 
+	 * @Override public User ddlExpandRequest(int idTask, int idUser, Calendar
+	 * date) { // TODO Auto-generated method stub Task t = null; User u =
+	 * userRepo.findById(idUser).orElse(null);
+	 * 
+	 * List<Task> tasksOfUser = u.getTask(); Task res = null; int nbT =
+	 * tasksOfUser.size(); int i = 0;
+	 * 
+	 * while(tasksOfUser.get(i).getId() != idTask) {
+	 * 
+	 * // u.setTask(task); res = tasksOfUser.get(i); i++; }
+	 * 
+	 * 
+	 * while(u.getTask().get(i).getId() != idTask) {
+	 * 
+	 * // u.setTask(task); res = tasksOfUser.get(i); i++; }
+	 * u.getTask().get(i).setDdlExpanded(date);
+	 * 
+	 * 
+	 * return u; //return tasksOfUser.get(i); // t.setDdlExpanded(ddlExpanded);
+	 * }
+	 * 
+	 */
+
+	@Override
+	public void confirm(Task task) {
+		// TODO Auto-generated method stub
+		Task b = taskRepo.findById(task.getId()).orElse(null);
+		b.setStartDateConfirm(task.getStartDate());
+		b.setFinishDateConfirm(task.getStartDate());
+		taskRepo.save(b);
+		
+	}
+
 
 
 

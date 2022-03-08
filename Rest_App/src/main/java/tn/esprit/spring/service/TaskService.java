@@ -4,43 +4,58 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import tn.esprit.spring.entity.Score;
 import tn.esprit.spring.entity.Task;
+import tn.esprit.spring.entity.User;
 
 public interface TaskService {
-
-	void ajouterTask(Task task);
+	
+	Task ajouterTask(Task task);
 
 	List<Task> getTasks();
 
 	Task getTaskById(int id);
 	
-	Calendar getStartDate(int id);
-	
-	Calendar getFinishDate(int id);
-
 	Task updateTask(Task task);
 
 	String deleteTask(int id);
+
+	List<Integer> getId_SortDDL_ProcessingTasks();
 	
-	List<Integer> trierparddl();
+	List<Task> getTask_SortDDL_ProcessingTasks();
+	
+	List<Task> getTask_SortDDL_ProcessingTasks_byProject(String pName);
+	
+	
+	//Calendar getStartDate(int id);
+
+	Calendar getFinishDate(int id);
+
+	
 
 	Task updateStartDate(int id, Calendar date);
 
 	Task updatefinishDate(int id, Calendar date);
 
-//	Task determinFinishDate(int id);
-
-	
-
-	//void assignTaskToUser(int idTask, int idUser);
-
-//	void schedulingtaskGREEDY_METHOD();
 	Calendar calculate_FinishDate(int id);
+	
+	int getNb_Word_Days(int id);
+/*
+	
+
+
+
+	User ddlExpandRequest(int idTask, int idUser, Calendar date);
 
 	
-	
-	
+*/
+
+	void confirm(Task task);
+
+
+
 	
 
+	
+
+	
 }

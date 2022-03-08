@@ -17,9 +17,9 @@ public class BadgeServiceImpl implements BadgeService{
 	private BadgeRepo badgeRepo;
 
 	@Override
-	public void ajouterBadge(Badge badge) {
+	public Badge ajouterBadge(Badge badge) {
 		// TODO Auto-generated method stub
-		badgeRepo.save(badge);
+		return badgeRepo.save(badge);
 		
 	}
 
@@ -52,6 +52,35 @@ public class BadgeServiceImpl implements BadgeService{
 		// TODO Auto-generated method stub
 		badgeRepo.deleteById(id);
 		return "badge "+id+" is deleted";
+	}
+
+	@Override
+	public Badge voteBadge(int id, String vote) {
+		// TODO Auto-generated method stub
+		Badge b = badgeRepo.findById(id).orElse(null);
+		if(vote.compareToIgnoreCase("yes") == 0)
+		{
+			b.nbVoteYes++;
+			badgeRepo.save(b);
+			return b;
+		}
+		else if(vote.compareToIgnoreCase("no") == 0)
+		{
+			b.nbVoteNo++;
+			badgeRepo.save(b);
+			return b;
+		}
+		else if(vote.compareToIgnoreCase("abs") == 0)
+		{
+			b.nbVoteABS++;
+			badgeRepo.save(b);
+			return b;
+		}
+		else
+		{
+			return null;
+		}
+		
 	}
 
 }

@@ -2,11 +2,14 @@ package tn.esprit.spring.controller;
 
 import tn.esprit.spring.service.UserService;
 import tn.esprit.spring.service.*;
+import tn.esprit.spring.entity.Task;
 import tn.esprit.spring.entity.User;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +28,13 @@ public class UserControl {
 	@GetMapping("/getUserByDept/{deptName}")
 	public List<Integer> getUserByDept(@PathVariable("deptName") String deptName) {
 		return userService.getUserByDept(deptName);
+
+	}
+
+	// http://localhost:8082/examen/User/getUsers
+	@GetMapping("/getUsers")
+	public Iterable<User> getUsers() {
+		return userService.getUsers();
 
 	}
 
@@ -47,7 +57,7 @@ public class UserControl {
 			userService.assignTaskToUser(idTask, idUs);
 		}
 
-		return "The choosen task is successfully assigned to the following " + deptName + " members: " + deptUsers;
+		return "The chosen task is successfully assigned to the following " + deptName + " members: " + deptUsers;
 	}
 
 	// http://localhost:8082/examen/User/unassignTaskToDept/{idTask}/{deptName}
@@ -69,5 +79,14 @@ public class UserControl {
 	public void unassignTaskToUser(@PathVariable("idTask") int idTask, @PathVariable("idUser") int idUser) {
 		userService.unassignTaskToUser(idTask, idUser);
 	}
+
+	// http://localhost:8082/examen/User/retrieveTasksByUser/idUser
+	@GetMapping("/retrieveTasksByUser/{idUser}")
+	public List<Task> retrieveTasksByUser(@PathVariable("idUser") int idUser) {
+		return userService.retrieveTasksByUser(idUser);
+
+	}
+
+
 
 }
