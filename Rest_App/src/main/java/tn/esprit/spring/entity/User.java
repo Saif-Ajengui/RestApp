@@ -1,6 +1,7 @@
 package tn.esprit.spring.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -44,8 +46,11 @@ public class User implements Serializable {
 	private String lname;
 	@Column(name = "fname")
 	private String fname;
-	@Column(name = "pic")
-	private String pic;
+	@Column(name = "birthdate")
+	private Date birthdate;
+	@Column(name = "pic", nullable = true)
+	@Lob
+	private byte[] pic;
 	@Column(name = "email")
 	private String email;
 	@Column(name = "pwd")
@@ -57,6 +62,9 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role type;
 	
+	@Column(name = "resettoken")
+	private String resettoken;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<Notification> notif;
 
@@ -66,7 +74,76 @@ public class User implements Serializable {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.EAGER)
 	private Set<TChat> TChatR;
+	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	
+	public byte[] getPic() {
+		return pic;
+	}
 
+
+	public void setPic(byte[] pic) {
+		this.pic = pic;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPwd() {
+		return pwd;
+	}
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+	public boolean isApproved() {
+		return approved;
+	}
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+	public Role getType() {
+		return type;
+	}
+	public void setType(Role type) {
+		this.type = type;
+	}
+	public Date getBirthdate() {
+		return birthdate;
+	}
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public String getResettoken() {
+		return resettoken;
+	}
+	public void setResettoken(String resettoken) {
+		this.resettoken = resettoken;
+	}
+	
 	
 	
 	

@@ -38,9 +38,9 @@ public class TChat implements Serializable {
 	@Column(name = "textMessage")
 	private String textMessage;
 
-	@Column(name = "pic", nullable = true)
+	@Column(name = "file", nullable = true)
 	@Lob
-	private byte[] pic;
+	private byte[] file;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "dateSends")
@@ -57,6 +57,63 @@ public class TChat implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_receiver")
 	private User receiver;
+
+	public int getIdTChat() {
+		return idTChat;
+	}
+
+
+	public String getTextMessage() {
+		return textMessage;
+	}
+
+	public void setTextMessage(String textMessage) {
+		this.textMessage = textMessage;
+	}
+
+	
+
+	public byte[] getFile() {
+		return file;
+	}
+
+
+	public void setFile(byte[] file) {
+		this.file = file;
+	}
+
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	public User getSender() {
+		return sender;
+	}
+
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+
+	public User getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(User receiver) {
+		this.receiver = receiver;
+	}
 
 	
 
