@@ -11,12 +11,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
-import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.Comment;
 
 
 
 @Repository
-public interface ICommentaireRepository extends CrudRepository< Commentaire , Integer> {
+public interface ICommentRepository extends CrudRepository< Comment , Integer> {
 	
 	
 	@Modifying (clearAutomatically = true)
@@ -24,12 +24,12 @@ public interface ICommentaireRepository extends CrudRepository< Commentaire , In
 	public void deleteById(@Param("id") int id);
 	
 	@Query("SELECT c FROM Commentaire c WHERE c.commentContent LIKE %?1%") 
-	public List<Commentaire> findCommentsByTextContaining(String pattern);
+	public List<Comment> findCommentsByTextContaining(String pattern);
 	
 	
 	
 	@Query("SELECT c FROM Commentaire c WHERE c.Publication.id =:id")
-	public List<Commentaire> getCommentsByPostId(@Param("id")int id);
+	public List<Comment> getCommentsByPostId(@Param("id")int id);
 	
 
 }

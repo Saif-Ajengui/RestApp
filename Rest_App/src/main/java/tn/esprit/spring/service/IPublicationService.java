@@ -2,7 +2,7 @@ package tn.esprit.spring.service;
 
 import java.util.List;
 
-import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.Comment;
 import tn.esprit.spring.entity.Publication;
 
 

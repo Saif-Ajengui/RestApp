@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.Comment;
 import tn.esprit.spring.entity.Departement;
 import tn.esprit.spring.repository.IDepartementRepository;
 

@@ -50,7 +50,7 @@ public class Publication  implements Serializable {
 	@OneToMany(mappedBy="Publication", 
 			cascade={CascadeType.PERSIST, CascadeType.REMOVE},
 			fetch=FetchType.EAGER)
-	private List<Commentaire> commentaires;
+	private List<Comment> commentaires;
 	
 	@ManyToOne
 	@JoinColumn(name= "id_user")
@@ -101,11 +101,11 @@ public class Publication  implements Serializable {
 		this.modifyDate = modifyDate;
 	}
 	
-	public List<Commentaire> getComments() {
+	public List<Comment> getComments() {
 		return commentaires;
 	}
 
-	public void setCommentaire(List<Commentaire> commentaires) {
+	public void setCommentaire(List<Comment> commentaires) {
 		this.commentaires = commentaires;
 	}
 	

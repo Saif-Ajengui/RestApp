@@ -51,7 +51,7 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="User", 
 			cascade={CascadeType.PERSIST, CascadeType.REMOVE},
 			fetch=FetchType.EAGER)
-	private List<Commentaire> commentaires;
+	private List<Comment> commentaires;
 	
 	
 	@JsonIgnore

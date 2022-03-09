@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.Comment;
 import tn.esprit.spring.entity.Publication;
 import tn.esprit.spring.service.PublicationServiceImpl;
 

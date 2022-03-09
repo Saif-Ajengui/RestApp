@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Commentaire implements Serializable {
+public class Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ public class Commentaire implements Serializable {
 	
 	
 	
-	public Commentaire() {
+	public Comment() {
 		super();
 	}
 

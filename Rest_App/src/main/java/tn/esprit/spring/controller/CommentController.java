@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import tn.esprit.spring.entity.Commentaire;
-import tn.esprit.spring.service.CommentaireServiceImpl;
+import tn.esprit.spring.entity.Comment;
+import tn.esprit.spring.service.CommentServiceImpl;
 
 
 
 @RestController
-public class CommentaireController {
+public class CommentController {
 	
 	@Autowired  
-	CommentaireServiceImpl commentServiceImpl;
+	CommentServiceImpl commentServiceImpl;
 	
 	//URL: http://localhost:8082/examen/Commentaire/add-commentaire/{idP}/{idu}
 	@PostMapping("/Commentaire/add-commentaire/{idP}/{idu}")
-	public String addCommentaire(@RequestBody Commentaire commentaires, @PathVariable("idP")int idP, @PathVariable("idu")int idu ) throws Exception   
+	public String addCommentaire(@RequestBody Comment commentaires, @PathVariable("idP")int idP, @PathVariable("idu")int idu ) throws Exception   
 	{  
 		return (commentServiceImpl.addCommentaire(commentaires, idP,idu));  						
 	} 
@@ -38,18 +38,18 @@ public class CommentaireController {
 	} 
 	
 	@PutMapping("/Commentaire/update-commentaire/{id}/{idu}")  
-	public String updateCommentaire(@RequestBody Commentaire comments, @PathVariable("id")int id, @PathVariable("idu")int idu) throws Exception   
+	public String updateCommentaire(@RequestBody Comment comments, @PathVariable("id")int id, @PathVariable("idu")int idu) throws Exception   
 	{  
 		return commentServiceImpl.updateCommentaire(comments,id,idu);  			  
 	}
 	
 	@GetMapping("/Commentaire/get-all-commentaires")  
-	public List<Commentaire> getAllComments()   
+	public List<Comment> getAllComments()   
 	{  
 		return commentServiceImpl.getAllCommentaires();  
 	}  
 	@GetMapping("/Commentaire/comments-by-post/{idP}")
-	public List<Commentaire> CountCommentairesByPublication(@PathVariable("idP") int idP) {
+	public List<Comment> CountCommentairesByPublication(@PathVariable("idP") int idP) {
 		return commentServiceImpl.getCommentairesByPublicationId(idP);
 
 	}
@@ -58,7 +58,7 @@ public class CommentaireController {
 		return commentServiceImpl.CountCommentairesByPublication(idP);
 	}
 	@GetMapping("/Commentaire/search/{pattern}")
-	public List<Commentaire> commentSearch(@RequestParam("pattern")String pattern){
+	public List<Comment> commentSearch(@RequestParam("pattern")String pattern){
 		//System.out.println(pattern);
 		return commentServiceImpl.searchCommentaires(pattern);
 	
