@@ -19,9 +19,29 @@ public class Departement  implements Serializable {
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		private Long id;
 		private String name; 
-		@OneToMany(mappedBy="departement", 
+		@OneToMany(mappedBy="Departement", 
 				cascade={CascadeType.PERSIST, CascadeType.REMOVE},
 				fetch=FetchType.EAGER)
-		private List<Publication> publication;
+		private List<Publication> Publication;
+		
+		public Departement() {
+			super();
+		}
 
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
+		
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+		
 }
