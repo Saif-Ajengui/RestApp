@@ -29,9 +29,6 @@ import lombok.Setter;
 
 
 @Entity
-@AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "User")
 public class User implements Serializable {
 	/**
@@ -88,6 +85,13 @@ public class User implements Serializable {
 	
 
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="U_Articles")
+	private Set<Article> Articles;
+		
+	@ManyToMany(cascade = CascadeType.ALL) 
+	private Set<Question> U_Question;
+	
+
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.EAGER)
 	private Set<TChat> TChatS;
@@ -99,9 +103,18 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
 	private List<Rating>evaluations;
+	
 	private float accBalance; 
 
-
+	
+	
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "User")
+	private Set<Comment> commentaires;
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Publication> Publications;
 	
 
 
@@ -273,6 +286,27 @@ public class User implements Serializable {
 	public void setAccBalance(float accBalance) {
 		this.accBalance = accBalance;
 	}
+
+
+	public User(Integer id, String fname, String deptName) {
+		super();
+		this.id = id;
+		this.fname = fname;
+		this.deptName = deptName;
+	}
+
+
+	public User(Integer id, String fname, String deptName, Badge badge, List<Task> task, List<Evaluation> evaluation) {
+		super();
+		this.id = id;
+		this.fname = fname;
+		this.deptName = deptName;
+		this.badge = badge;
+		this.task = task;
+		this.evaluation = evaluation;
+	}
+	
+	
 	
 	
 	

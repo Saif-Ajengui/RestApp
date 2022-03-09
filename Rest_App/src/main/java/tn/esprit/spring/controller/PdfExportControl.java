@@ -30,7 +30,7 @@ public class PdfExportControl {
 		this.pdfGeneratorService = pdfGeneratorService;
 	}
 	
-	// http://localhost:8082/examen/PdfExportControl/pdf-generate/pName
+	// http://localhost:8082/PdfExportControl/pdf-generate/pName
 		@GetMapping("/pdf-generate/{pName}")
 		public void generatePDF(HttpServletResponse response,@PathVariable("pName") String pName) throws DocumentException, IOException {
 			

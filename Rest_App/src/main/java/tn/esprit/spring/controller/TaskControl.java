@@ -25,13 +25,13 @@ public class TaskControl {
 	@Autowired
 	private TaskService taskService;
 
-	// http://localhost:8082/examen/Task/AjoutTask
+	// http://localhost:8082/Task/AjoutTask
 	@PostMapping("/AjoutTask")
 	public Task AjoutTask(@RequestBody Task task) {
 		return taskService.ajouterTask(task);
 	}
 
-	// http://localhost:8082/examen/Task/Tasks
+	// http://localhost:8082/Task/Tasks
 	@GetMapping("/Tasks")
 	@ResponseBody
 	public List<Task> findAllTasks() {
@@ -139,7 +139,7 @@ public class TaskControl {
 		// return taskService.updatefinishDate(id, f_d);
 	}
 
-	// http://localhost:8082/examen/Task/mesurement_scheduleTask_GREEDY_METHOD/date
+	// http://localhost:8082/Task/mesurement_scheduleTask_GREEDY_METHOD/date
 	@PutMapping("/mesurement_scheduleTask_GREEDY_METHOD/{date}")
 	@ResponseBody
 	public String mesurement_scheduleTask_GREEDY_METHOD(
@@ -298,7 +298,7 @@ public class TaskControl {
 
 	}
 
-	// http://localhost:8082/examen/Task/test_scheduleTask_GREEDY_METHOD_byProject/date/pName
+	// http://localhost:8082/Task/test_scheduleTask_GREEDY_METHOD_byProject/date/pName
 	@PutMapping(value = "/test_scheduleTask_GREEDY_METHOD_byProject/{date}/{pName}")
 	public List<Task> test_scheduleTask_GREEDY_METHOD_byProject(
 			@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar date,
@@ -320,7 +320,7 @@ public class TaskControl {
 
 	}
 
-	// http://localhost:8082/examen/Task/confirm_scheduleTask_GREEDY_METHOD_byProject/date/pName
+	// http://localhost:8082/Task/confirm_scheduleTask_GREEDY_METHOD_byProject/date/pName
 	@PutMapping("/confirm_scheduleTask_GREEDY_METHOD_byProject/{date}/{pName}")
 	public List<Task> confirm_scheduleTask_GREEDY_METHOD_byProject(
 			@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar date,

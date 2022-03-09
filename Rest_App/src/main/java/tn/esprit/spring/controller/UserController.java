@@ -81,7 +81,7 @@ public class UserController {
 		return "The choosen task is successfully unassigned from the following " + deptName + " members: " + deptUsers;
 	}
 
-	// http://localhost:8082/examen/User/unassignTaskToUser/idTask/idUser
+	// http://localhost:8082/User/unassignTaskToUser/idTask/idUser
 	@PutMapping(value = "/unassignTaskToUser/{idTask}/{idUser}")
 	public void unassignTaskToUser(@PathVariable("idTask") int idTask, @PathVariable("idUser") int idUser) {
 		userService.unassignTaskToUser(idTask, idUser);

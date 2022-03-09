@@ -32,10 +32,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Task implements Serializable {
 
 	/**
@@ -225,6 +221,29 @@ public class Task implements Serializable {
 				+ ", \nStart Date=" + startDateConfirm.get(Calendar.YEAR)+ "-" + startDateConfirm.get(Calendar.MONTH) + "-" + startDateConfirm.get(Calendar.DAY_OF_MONTH)
 				+ ", \nfinish Date=" + finishDateConfirm.get(Calendar.YEAR) + "-"+ finishDateConfirm.get(Calendar.MONTH) + "-" + finishDateConfirm.get(Calendar.DAY_OF_MONTH) 
 				+ "]";
+	}
+	
+	
+
+	public Task(int id, String project, String title, String description,
+			@FutureOrPresent(message = "date has to be future or present") Calendar ddl,
+			@Positive(message = "the number of work days valued has to be positive") int nbWorkDaysValued,
+			TaskState state, boolean acceptAfterDDL, Calendar createdAt, Calendar startDateConfirm,
+			Calendar finishDateConfirm, Calendar startDate, Calendar finishDate) {
+		super();
+		this.id = id;
+		this.project = project;
+		this.title = title;
+		this.description = description;
+		this.ddl = ddl;
+		this.nbWorkDaysValued = nbWorkDaysValued;
+		this.state = state;
+		this.acceptAfterDDL = acceptAfterDDL;
+		this.createdAt = createdAt;
+		this.startDateConfirm = startDateConfirm;
+		this.finishDateConfirm = finishDateConfirm;
+		this.startDate = startDate;
+		this.finishDate = finishDate;
 	}
 
 	public Task(int id, String project, String title, String description,

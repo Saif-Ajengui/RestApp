@@ -17,10 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity 
-@Getter 
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class Badge implements Serializable{
 	
 	/**
@@ -100,6 +97,35 @@ public class Badge implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Badge(int id, byte[] img,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteYes,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteNo,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteABS, User user) {
+		super();
+		this.id = id;
+		this.img = img;
+		this.nbVoteYes = nbVoteYes;
+		this.nbVoteNo = nbVoteNo;
+		this.nbVoteABS = nbVoteABS;
+		this.user = user;
+	}
+
+	public Badge() {
+		super();
+	}
+
+	public Badge(int id, byte[] img,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteYes,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteNo,
+			@PositiveOrZero(message = "fiel has to be greater than or equal to 0") int nbVoteABS) {
+		super();
+		this.id = id;
+		this.img = img;
+		this.nbVoteYes = nbVoteYes;
+		this.nbVoteNo = nbVoteNo;
+		this.nbVoteABS = nbVoteABS;
 	}
 	
 
