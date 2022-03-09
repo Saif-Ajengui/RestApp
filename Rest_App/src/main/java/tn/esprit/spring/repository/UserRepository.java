@@ -16,6 +16,10 @@ import tn.esprit.spring.entity.User;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
 
+
+	@Query("SELECT distinct u.id FROM User u WHERE u.deptName = ?1")
+	List<Integer> findByDept(String deptName);
+	
 	@Query("select u from User u where u.email = ?1")
 	User findUserByEmail(String email);
 	

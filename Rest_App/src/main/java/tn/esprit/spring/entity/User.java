@@ -2,6 +2,7 @@ package tn.esprit.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +30,6 @@ import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "User")
@@ -65,8 +67,26 @@ public class User implements Serializable {
 	@Column(name = "resettoken")
 	private String resettoken;
 	
+	private String deptName;
+
+	// attributs de mapping:
+	@OneToOne
+	private Badge badge;
+	
+	//@JsonIgnore
+	@ManyToMany(mappedBy="users",fetch=FetchType.EAGER)
+	private List<Task> task;
+	
+
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<Notification> notif;
+	
+	
+	@OneToMany(cascade= CascadeType.ALL)
+	private List<Evaluation> evaluation;
+	
+
 
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.EAGER)
@@ -75,10 +95,90 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.EAGER)
 	private Set<TChat> TChatR;
 	
+	
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	private List<Rating>evaluations;
+	private float accBalance; 
+
+
+	
+
+
+	
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+
+	public Badge getBadge() {
+		return badge;
+	}
+
+
+	public void setBadge(Badge badge) {
+		this.badge = badge;
+	}
+
+
+	public List<Task> getTask() {
+		return task;
+	}
+
+
+	public void setTask(List<Task> task) {
+		this.task = task;
+	}
+
+
+	public List<Evaluation> getEvaluation() {
+		return evaluation;
+	}
+
+
+	public void setEvaluation(List<Evaluation> evaluation) {
+		this.evaluation = evaluation;
+	}
+
+
+	
+
+	public Set<TChat> getTChatS() {
+		return TChatS;
+	}
+
+
+	public void setTChatS(Set<TChat> tChatS) {
+		TChatS = tChatS;
+	}
+
+
+	public Set<TChat> getTChatR() {
+		return TChatR;
+	}
+
+
+	public void setTChatR(Set<TChat> tChatR) {
+		TChatR = tChatR;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 	
 	public String getLname() {
@@ -142,6 +242,36 @@ public class User implements Serializable {
 	}
 	public void setResettoken(String resettoken) {
 		this.resettoken = resettoken;
+	}
+
+
+	public Set<Notification> getNotif() {
+		return notif;
+	}
+
+
+	public void setNotif(Set<Notification> notif) {
+		this.notif = notif;
+	}
+
+
+	public List<Rating> getEvaluations() {
+		return evaluations;
+	}
+
+
+	public void setEvaluations(List<Rating> evaluations) {
+		this.evaluations = evaluations;
+	}
+
+
+	public float getAccBalance() {
+		return accBalance;
+	}
+
+
+	public void setAccBalance(float accBalance) {
+		this.accBalance = accBalance;
 	}
 	
 	

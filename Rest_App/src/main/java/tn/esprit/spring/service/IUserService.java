@@ -1,5 +1,8 @@
 package tn.esprit.spring.service;
 
+import java.util.List;
+
+import tn.esprit.spring.entity.Task;
 import tn.esprit.spring.entity.User;
 
 public interface IUserService {
@@ -11,5 +14,17 @@ public interface IUserService {
 	void ApprovedProfile(int id);
 	public User updatePassword(User u) throws Exception ;
 	public boolean isFindEmail(String email) ;
+	
+	//fatma
+	List<Integer> getUserByDept(String deptName);
+	
+	Iterable<User> getUsers();
+	
+
+	void assignTaskToUser(int idTask, int idUser);
+	
+	void unassignTaskToUser(int idTask, int idUser);
+
+	List<Task> retrieveTasksByUser(int idUser);
 	
 }
