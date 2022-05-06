@@ -38,9 +38,9 @@ public class DepositControl {
     	return depositService.assignDepositToTask(idDepo, idTask);
 	}
     
- // http://localhost:8082/examen/Deposit/AddDeposit
+ // http://localhost:8082/Deposit/AddDeposit
  	@PostMapping(value = "/AddDeposit", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
- 	public Deposit AddDeposit(@RequestPart("img") MultipartFile file) throws IOException {
+ 	public Deposit AddDeposit(@RequestPart("file") MultipartFile file) throws IOException {
  		Deposit bd = new Deposit();
 
  		String fileNameRepo = StringUtils.cleanPath(file.getOriginalFilename());

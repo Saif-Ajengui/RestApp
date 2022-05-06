@@ -1,6 +1,7 @@
 package tn.esprit.spring.entity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class User implements Serializable {
 	@Column(name = "fname")
 	private String fname;
 	@Column(name = "birthdate")
-	private Date birthdate;
+	private String birthdate;
 	@Column(name = "pic", nullable = true)
 	@Lob
 	private byte[] pic;
@@ -58,7 +59,7 @@ public class User implements Serializable {
 	private boolean approved;
 	
 	@Column(name = "type")
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING) 
 	private Role type;
 	
 	@Column(name = "resettoken")
@@ -241,10 +242,10 @@ public class User implements Serializable {
 	public void setType(Role type) {
 		this.type = type;
 	}
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 	public Integer getId() {
@@ -253,8 +254,9 @@ public class User implements Serializable {
 	public String getResettoken() {
 		return resettoken;
 	}
-	public void setResettoken(String resettoken) {
+	public String setResettoken(String resettoken) {
 		this.resettoken = resettoken;
+		return resettoken;
 	}
 
 
@@ -304,6 +306,13 @@ public class User implements Serializable {
 		this.badge = badge;
 		this.task = task;
 		this.evaluation = evaluation;
+	}
+
+
+	@Override
+	public String toString() {
+		return "User [lname=" + lname + ", fname=" + fname + ", birthdate=" + birthdate + ", pic="
+				 + ", email=" + email + ", pwd=" + pwd + ", type=" + type + "]";
 	}
 	
 	

@@ -32,7 +32,7 @@ public class BadgeControl {
 	@Autowired
 	private BadgeService badgeService;
 
-	// http://localhost:8082/examen/Badge/AjoutBadge
+	// http://localhost:8082/Badge/AjoutBadge
 	@PostMapping(value = "/AjoutBadge", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public Badge AjoutBadge(@RequestParam("nbVoteYes") int nbVoteYes, @RequestParam("nbVoteNo") int nbVoteNo,
 			@RequestParam("nbVoteABS") int nbVoteABS, @RequestPart("img") MultipartFile file) throws IOException {
@@ -61,35 +61,35 @@ public class BadgeControl {
 
 	}
 
-	// http://localhost:8082/examen/Badge/Badges
+	// http://localhost:8082/Badge/Badges
 	@GetMapping("/Badges")
 	@ResponseBody
 	public List<Badge> findAllBadges() {
 		return badgeService.getBadges();
 	}
 
-	// http://localhost:8082/examen/Badge/{id}
+	// http://localhost:8082/Badge/{id}
 	@GetMapping("/{id}")
 	@ResponseBody
 	public Badge findBadgeById(@PathVariable("id") int id) {
 		return badgeService.getBadgeById(id);
 	}
 
-	// http://localhost:8082/examen/Badge/update
+	// http://localhost:8082/Badge/update
 	@PutMapping("/update")
 	@ResponseBody
 	public Badge updateBadge(@RequestBody Badge badge) {
 		return badgeService.updateBadge(badge);
 	}
 
-	// http://localhost:8082/examen/Badge/delete/{id}
+	// http://localhost:8082/Badge/delete/{id}
 	@DeleteMapping("/delete/{id}")
 	@ResponseBody
 	public String deleteBadge(@PathVariable("id") int id) {
 		return badgeService.deleteBadge(id);
 	}
 	
-	// http://localhost:8082/examen/Badge/voteBadge/id/vote
+	// http://localhost:8082/Badge/voteBadge/id/vote
 		@PutMapping("/voteBadge/{id}/{vote}")
 		@ResponseBody
 		public Badge voteBadge(@PathVariable("id") int id, @PathVariable("vote") String vote) {

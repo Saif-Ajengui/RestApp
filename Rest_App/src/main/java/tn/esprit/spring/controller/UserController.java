@@ -3,6 +3,8 @@ package tn.esprit.spring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,6 @@ import tn.esprit.spring.entity.Task;
 import tn.esprit.spring.entity.User;
 import tn.esprit.spring.repository.UserRepository;
 import tn.esprit.spring.service.IUserService;
-import tn.esprit.spring.service.UserService;
 
 @RestController
 @CrossOrigin
@@ -28,17 +29,23 @@ public class UserController {
 	@Autowired
 	PasswordEncoder encoder;
 	@Autowired
-	UserRepository userRepository;
+	UserRepository userRepository; 
 	
-
-	// http://localhost:8082/examen/User/getUserByDept/deptName
-	@GetMapping("/getUserByDept/{deptName}")
-	public List<Integer> getUserByDept(@PathVariable("deptName") String deptName) {
-		return userService.getUserByDept(deptName);
-
+	@GetMapping("/details")
+	public User getUserDetails(@AuthenticationPrincipal UserDetails userAuth ) {
+		String e=userAuth.getUsername();
+		User u =userRepository.findUserByEmail(e);
+		return u;
 	}
 
-	// http://localhost:8082/examen/User/getUsers
+	// http://localhost:8082/examen/User/getUserByDept/deptName 
+	@GetMapping("/getUserByDept/{deptName}")
+	public List<Integer> getUserByDept(@PathVariable("deptName") String deptName) {
+		return userService.getUserByDept(deptName); 
+ 
+	} 
+
+	// http://localhost:8082/examen/User/getUsers 
 	@GetMapping("/getUsers")
 	public Iterable<User> getUsers() {
 		return userService.getUsers();

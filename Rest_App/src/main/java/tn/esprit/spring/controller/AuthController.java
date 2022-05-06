@@ -1,5 +1,6 @@
 package tn.esprit.spring.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -7,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,16 +19,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import tn.esprit.spring.config.FileUpload;
 import tn.esprit.spring.config.JwtTokenUtil;
+import tn.esprit.spring.entity.Role;
 import tn.esprit.spring.entity.User;
 import tn.esprit.spring.jwt.JwtRequest;
 import tn.esprit.spring.jwt.JwtResponse;
@@ -63,6 +73,7 @@ public class AuthController {
 
 	
 	@PostMapping( "/login")
+	
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
 		String resultat = userService.Authentication(authenticationRequest.getUsername(),
@@ -102,32 +113,56 @@ public class AuthController {
 	
 	
 	
-	@PostMapping("/signup")
+	@PostMapping(value="/signup", consumes = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.MULTIPART_FORM_DATA_VALUE })
 		@ResponseBody
-		public ResponseEntity<?> createUser(@RequestBody User user) throws Exception {
-			if (user == null) {
-				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add values!"));
-			}
-			if (user.getFname().equals("")) {
+		public ResponseEntity<?> createUser(@RequestParam(value="fname") String fname,
+				@RequestParam(value="lname") String lname,
+				@RequestParam(value="email") String email,
+				@RequestParam(value="pwd") String pwd,
+				@RequestParam(value="birthdate") String birthdate,
+				@RequestParam(value="type") Role type,
+				@RequestParam(value="file") MultipartFile file) throws Exception {
+			
+			if (fname.equals("")) { 
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add first name!"));
 			}
-			if (user.getLname().equals("")) {
+			if (lname.equals("")) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add last name!"));
 			}
-			if (!(user.getBirthdate() instanceof Date)) {
+			if (birthdate.equals("")) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add bithday date!"));
 			}
-			if (user.getEmail().equals("")|| !UserService.validate(user.getEmail())) {
+			if (email.equals("")|| !UserService.validate(email)) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add email!"));
 			}
-			if (user.getPwd().equals("") ) {
+			if (pwd.equals("") ) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: please add password!"));
 			}
-			if (userService.isFindEmail(user.getEmail())==true ) {
+			if (userService.isFindEmail(email)==true ) {
 				return ResponseEntity.badRequest().body(new MessageResponse("account is already exist"));
 			}
-			user.setPwd(encoder.encode(user.getPwd()));
+			User user=new User();
+			user.setPwd(encoder.encode(pwd));
 			user.setApproved(false);
+			user.setLname(lname);
+			user.setFname(fname);
+			user.setEmail(email);
+			user.setType(type);
+			user.setBirthdate(birthdate);
+			String fileNameRepo = StringUtils.cleanPath(file.getOriginalFilename());
+			String uploadDir = "uploads/";
+			try {
+				String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+						.path(fileNameRepo).toUriString();
+				
+			//	user.setPic(fileDownloadUri.getBytes());
+				user.setPic(file.getBytes());
+				FileUpload.saveFile(uploadDir, fileNameRepo, file);
+				System.out.println("file url =====>" + file);
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
 			userService.Register(user);
 
 			SimpleMailMessage AppEmail = new SimpleMailMessage();
@@ -157,15 +192,16 @@ public class AuthController {
 	
 	
 	@PostMapping("/forgot/{email}")
-	public String processForgotPasswordForm(@PathVariable("email") String email,
+	public  ResponseEntity<?> processForgotPasswordForm(@PathVariable("email") String email,
 			HttpServletRequest request) throws Exception {
+		String resetT="";
 		User user = userRepository.findUserByEmail(email);
 
 		if (user == null) {
-			return "user not found"; 
+			return  ResponseEntity.ok("user not found"); 
 		} else {
 			//resettoken 
-			user.setResettoken(UUID.randomUUID().toString());
+			 resetT +=user.setResettoken(UUID.randomUUID().toString());
 
 			userService.updatePassword(user);
 
@@ -175,17 +211,17 @@ public class AuthController {
 			passwordResetEmail.setText("Dear " + user.getLname()
 					+ "\n "
 					+"To reset your password, click the link below: \n "
-					+ "https://localhost:8082/Authentification/reset/"
+					+ "https://http://localhost:4200/resetpassword"
 					+ "\n "
 					+"\n Your token is: "
 					+ user.getResettoken());
-
+ 
 			sendEmail.sendEmail(passwordResetEmail);
 		}
-		return "Mail sent";
+		return  ResponseEntity.ok(new JwtResponse(resetT));
 
 	}
-	@PostMapping("/reset/{token}/{newpwd}")
+	@PostMapping("/reset/{token}/{newpwd}") 
 	public String setNewPassword(@PathVariable("token") String token,@PathVariable("newpwd") String newpassword ) throws Exception {
 		User user = userRepository.findUserByToken(token);
 		if (user != null) {

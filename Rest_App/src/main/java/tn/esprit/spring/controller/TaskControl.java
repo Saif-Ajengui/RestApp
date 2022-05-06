@@ -38,28 +38,28 @@ public class TaskControl {
 		return taskService.getTasks();
 	}
 
-	// http://localhost:8082/examen/Task/{id}
+	// http://localhost:8082/Task/{id}
 	@GetMapping("/{id}")
 	@ResponseBody
 	public Task findTaskById(@PathVariable("id") int id) {
 		return taskService.getTaskById(id);
 	}
 
-	// http://localhost:8082/examen/Task/update
+	// http://localhost:8082/Task/update
 	@PutMapping("/update")
 	@ResponseBody
 	public Task updateTask(@RequestBody Task task) {
 		return taskService.updateTask(task);
 	}
 
-	// http://localhost:8082/examen/Task/delete/{id}
+	// http://localhost:8082/Task/delete/{id}
 	@DeleteMapping("/delete/{id}")
 	@ResponseBody
 	public String deleteTask(@PathVariable("id") int id) {
 		return taskService.deleteTask(id);
 	}
 
-	// http://localhost:8082/examen/Task/getId_SortDDL_ProcessingTasks
+	// http://localhost:8082/Task/getId_SortDDL_ProcessingTasks
 	@GetMapping("/getId_SortDDL_ProcessingTasks")
 	@ResponseBody
 	public List<Integer> getId_SortDDL_ProcessingTasks() {
@@ -242,7 +242,7 @@ public class TaskControl {
 
 	}
 
-	// http://localhost:8082/examen/Task/getMesurement_scheduleTask_GREEDY_METHOD_ByProject/pName
+	// http://localhost:8082/Task/getMesurement_scheduleTask_GREEDY_METHOD_ByProject/pName
 	@GetMapping(value = "/getMesurement_scheduleTask_GREEDY_METHOD_ByProject/{pName}")
 	@ResponseBody
 	public String getMesurement_scheduleTask_GREEDY_METHOD_ByProject(@PathVariable("pName") String pName) {
